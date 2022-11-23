@@ -11,7 +11,7 @@ const CategoryCard = ({ category }) => {
       <div className="card-body items-center text-center">
         <h2 className="card-title text-3xl mb-3 text-primary">{name}</h2>
         <div className="card-actions">
-          <button className="btn btn-primary text-white">See All Items</button>
+          <button className="btn btn-primary text-white">See All Products</button>
         </div>
       </div>
     </div>

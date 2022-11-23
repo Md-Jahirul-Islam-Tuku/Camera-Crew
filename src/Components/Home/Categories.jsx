@@ -8,7 +8,7 @@ const Categories = () => {
   },[])
   return (
     <div className='mt-12'>
-      <h1 className='my-5 text-3xl text-primary font-semibold text-left'>All Categories</h1>
+      <h1 className='my-5 text-3xl text-primary font-semibold text-left'>Shop Categories</h1>
       <div className='grid grid-cols-3 mb-10 gap-8'>
         {
           categories.map(category => <CategoryCard key={category.id} category={category} />)
