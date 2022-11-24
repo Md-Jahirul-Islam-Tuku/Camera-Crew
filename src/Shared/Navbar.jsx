@@ -5,31 +5,29 @@ import profile from '../Assets/img/icon/profile.png';
 import { AuthContext } from '../Context/AuthProvider';
 
 const Navbar = () => {
+  const [dbUser, setDbUser] = useState(null);
   const { user, logOut } = useContext(AuthContext);
-  const [dbUser, setDbUser] = useState({});
-  const [refresh, setRefresh] = useState(true);
   const navigate = useNavigate()
+  const email = user?.email;
   useEffect(() => {
-    fetch(`http://localhost:5000/user/${user?.email}`)
+    fetch(`http://localhost:5000/user/${email}`)
       .then(res => res.json())
       .then(data => {
-        setDbUser(data)
-        setRefresh(true)
+        setDbUser(data);
       })
-  }, [user?.email])
+  }, [email, user])
   const userLogOut = () => {
     logOut();
-    setRefresh(false);
     navigate('/')
   }
   const menu = <>
     <li><Link to='/' className='rounded-lg' >Home</Link></li>
     <li><Link to='/blog' className='rounded-lg' >Blog</Link></li>
     {
-      dbUser?.role === 'Buyer' && refresh && <li><Link to='/myorders' className='rounded-lg' >My Orders</Link></li>
+      dbUser?.role === 'Buyer' && user && <li><Link to='/myorders' className='rounded-lg' >My Orders</Link></li>
     }
     {
-      dbUser?.role === 'Seller' && refresh && <>
+      dbUser?.role === 'Seller' && user && <>
         <li tabIndex={0}>
           <Link to='/dashboard' className="justify-between rounded-lg">
             Dashboard
@@ -44,7 +42,7 @@ const Navbar = () => {
       </>
     }
     {
-      dbUser?.role === 'admin' && refresh && <>
+      dbUser?.role === 'admin' && user && <>
         <li tabIndex={0}>
           <Link className="justify-between">
             Dashboard
@@ -79,9 +77,9 @@ const Navbar = () => {
       </div>
       <div className="navbar-end">
         {
-          user ? <><Link to='/login' className="btn btn-ghost text-lg font-bold" onClick={() => userLogOut()} >Log Out</Link>
+          user ? <><button className="btn btn-ghost text-lg font-bold" onClick={userLogOut} >Log Out</button>
             <div className='tooltip tooltip-bottom tooltip-primary' data-tip={user?.displayName}>
-              <img src={user.photoURL} className='w-12 h-12 rounded-full border-2 border-primary' alt="UserPhoto" />
+              <img src={user.photoURL} className='w-12 h-12 rounded-full border-2 border-primary' alt="User" />
             </div></> :
             <><Link to='/login' className="btn btn-ghost text-lg font-bold">Login</Link>
               <img src={profile} className='w-10' alt="UserPhoto" /></>

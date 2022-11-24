@@ -31,6 +31,16 @@ const Login = () => {
       .then(error => {
         console.error(error)
         setLoading(false)
+      }).catch(err => {
+        console.log('error',err)
+        if (err.message === 'Firebase: Error (auth/user-not-found).') {
+          Swal.fire({
+            icon: 'error',
+            title: 'User Not Found. Create new account.',
+            showConfirmButton: false,
+          })
+        }
+        setLoading(false)
       })
   };
   const handleGoogleSign = () => {
