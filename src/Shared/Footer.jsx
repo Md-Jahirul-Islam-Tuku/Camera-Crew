@@ -9,7 +9,7 @@ const Footer = () => {
         <div className="lg:w-1/3">
           <Link to='/' className="flex justify-center space-x-3 lg:justify-start">
             <img src={logo} className='w-10' alt="Logo" />
-            <span className="self-center text-2xl font-semibold">CameraCrew</span>
+            <span className="self-center text-2xl font-semibold" style={{ fontFamily: 'Eagle Lake' }}>CameraCrew</span>
           </Link>
         </div>
         <div className="flex justify-center space-x-4">

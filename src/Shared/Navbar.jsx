@@ -6,11 +6,11 @@ import profile from '../Assets/img/icon/profile.png';
 const Navbar = () => {
   const menu = <>
     <li><Link to='/' className='rounded-lg' >Home</Link></li>
-    <li><Link to='/' className='rounded-lg' >Blog</Link></li>
-    <li><Link to='/' className='rounded-lg' >My Orders</Link></li>
+    <li><Link to='/blog' className='rounded-lg' >Blog</Link></li>
+    <li><Link to='/myorders' className='rounded-lg' >My Orders</Link></li>
   </>
   return (
-    <div className="navbar bg-base-100 text-primary">
+    <div className="navbar bg-base-100 text-primary py-8">
       <div className="navbar-start">
         <div className="dropdown">
           <label tabIndex={0} className="btn btn-ghost lg:hidden">
@@ -20,7 +20,7 @@ const Navbar = () => {
             {menu}
           </ul>
         </div>
-        <Link to='/' className="btn btn-ghost normal-case text-xl"><img src={logo} className='w-10' alt="Logo" /> CameraCrew</Link>
+        <Link to='/' className="btn btn-ghost normal-case text-3xl" style={{fontFamily: 'Eagle Lake'}}><img src={logo} className='w-10' alt="Logo" /> CameraCrew</Link>
       </div>
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal p-0 text-lg font-semibold">
@@ -28,7 +28,7 @@ const Navbar = () => {
         </ul>
       </div>
       <div className="navbar-end">
-        <Link to='/' className="btn btn-ghost">Login</Link>
+        <Link to='/login' className="btn btn-ghost">Login</Link>
         <img src={profile} className='w-10' alt="UserPhoto" />
       </div>
     </div>
