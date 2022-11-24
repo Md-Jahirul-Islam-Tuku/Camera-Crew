@@ -3,10 +3,13 @@ import { useForm } from "react-hook-form";
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../Context/AuthProvider';
 import google from '../Assets/img/icon/google.png'
+import { setAuthToken } from '../API/auth';
+import Swal from 'sweetalert2';
+import ButtonSpinner from '../Components/Spinner/buttonSpinner';
 
 const Login = () => {
   const { register, formState: { errors }, handleSubmit } = useForm();
-  const { signIn } = useContext(AuthContext);
+  const { signIn, loading, setLoading, signInWithGoogle } = useContext(AuthContext);
   const location = useLocation();
   const navigate = useNavigate();
   const from = location.state?.from?.pathname || "/";
@@ -15,12 +18,30 @@ const Login = () => {
     signIn(email, password)
       .then(result => {
         const user = result.user;
-        // setAuthToken(user)
-        console.log(user);
+        setLoading(false)
+        setAuthToken(user)
+        Swal.fire({
+          icon: 'success',
+          title: 'Login Successful.',
+          showConfirmButton: false,
+          timer: 1500
+        })
         navigate(from, { replace: true });
       })
-      .then(error => console.error(error))
+      .then(error => {
+        console.error(error)
+        setLoading(false)
+      })
   };
+  const handleGoogleSign = () => {
+    signInWithGoogle().then(result => {
+      const user = result.user;
+      console.log(user);
+      setAuthToken({ ...user, role: 'Buyer' });
+      setLoading(false);
+      navigate(from, { replace: true })
+    })
+  }
   return (
     <div className='lg:h-[89vh] flex justify-center'>
       <div className='lg:w-1/3 mx-2 lg:mx-0 shadow-xl mt-8 mb-80 p-5 rounded-xl bg-white'>
@@ -46,11 +67,13 @@ const Login = () => {
               <a href="/" className="label-text-alt link link-hover">Forgot password?</a>
             </label>
           </div>
-          <input type="submit" value='Login' className='btn btn-primary text-white my-4 w-full' />
+          <button className='btn btn-primary w-full my-5 text-white text-lg'>
+            {loading ? <ButtonSpinner /> : 'Log in'}
+          </button>
         </form>
         <p>New to Camera Crew ? <Link to='/signup' className='text-primary font-semibold' >Create new account</Link></p>
         <div className="divider">OR</div>
-        <button className='btn btn-outline btn-primary w-full'><img src={google} className='h-8 mr-2' alt="google" /> Continue with Google</button>
+        <button onClick={handleGoogleSign} className='btn btn-outline btn-primary w-full'><img src={google} className='h-8 mr-2' alt="google" /> Continue with Google</button>
       </div>
     </div>
   );

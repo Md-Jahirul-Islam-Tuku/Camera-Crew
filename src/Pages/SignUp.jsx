@@ -1,16 +1,18 @@
-import { updateProfile } from 'firebase/auth';
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2'
 import { AuthContext } from '../Context/AuthProvider';
-import google from '../Assets/img/icon/google.png'
+import google from '../Assets/img/icon/google.png';
+import { setAuthToken } from '../API/auth';
+import ButtonSpinner from '../Components/Spinner/buttonSpinner';
 
 const SignUp = () => {
   const { register, formState: { errors }, handleSubmit } = useForm();
-  const { createUser, auth } = useContext(AuthContext);
-  const [img, setImg] = useState('');
-  // const navigate = useNavigate();
+  const { createUser, updateUserProfile, loading, setLoading, signInWithGoogle } = useContext(AuthContext);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || '/';
   const handleSignUp = data => {
     const { role, name, email, password } = data;
     const image = data.image[0];
@@ -22,47 +24,40 @@ const SignUp = () => {
       body: formData
     }).then(res => res.json())
       .then(imgData => {
-        if (imgData.success) {
-          const image = imgData.data.url;
-          setImg(image)
+        if (imgData?.success) {
+          const userImage = `${imgData?.data.display_url}`;
+          createUser(email, password)
+            .then(() => {
+              updateUserProfile(name, imgData.data.display_url)
+              setAuthToken({ name, email, userImage, role });
+              Swal.fire({
+                icon: 'success',
+                title: 'Sign up Successful.',
+                showConfirmButton: false,
+                timer: 1500
+              })
+              setLoading(false);
+              navigate(from, { replace: true });
+            })
+            .catch(error => {
+              console.error(error);
+              setLoading(false)
+            })
         }
       })
-    console.log(role, name, email, password, img);
-    createUser(email, password)
-      .then(result => {
-        updateProfile(auth.currentUser, {
-          displayName: name,
-          photoURL: img
-        })
-        const user = result.user;
-        Swal.fire({
-          icon: 'success',
-          title: 'Sign up Successful.',
-          showConfirmButton: false,
-          timer: 1500
-        })
-        // saveUser(name, email, role);
-        // setAuthToken(user);
-        console.log(user);
-
-      })
-      .catch(error => console.error(error))
   };
-  // const saveUser = (name, email) => {
-  //   const user = { name, email };
-  //   fetch('http://localhost:5000/users', {
-  //     method: 'POST',
-  //     headers: {
-  //       'content-type': 'application/json'
-  //     },
-  //     body: JSON.stringify(user),
-  //   })
-  //     .then(res => res.json())
-  //     .then(data => navigate('/'))
-  // }
+  const handleGoogleSign = () => {
+    signInWithGoogle().then(result => {
+      const user = result.user;
+      console.log(user);
+      setAuthToken({...user, role: 'Buyer'});
+      setLoading(false);
+      navigate(from, { replace: true })
+    })
+  }
   return (
     <div className='lg:h-[89vh] flex justify-center'>
-      <div className='lg:w-1/3 mx-2 lg:mx-0 mt-8 mb-32 shadow-xl p-5 rounded-xl bg-white'>
+      <div className='lg:w-1/3 mx-2 lg:mx-0 mt-8 h-[78vh] shadow-xl p-5 rounded-xl bg-white'>
         <h2 className='text-2xl font-semibold mb-5'>Please Sign Up</h2>
         <form onSubmit={handleSubmit(handleSignUp)}>
           <div className='text-xl flex items-center justify-center font-semibold text-primary mt-4'>
@@ -102,12 +97,13 @@ const SignUp = () => {
             })} className='rounded-lg input-bordered input' />
             {errors.password && <p className='text-red-600 text-left'>{errors.password?.message}</p>}
           </div>
-
-          <input type="submit" value='Sign up' className='btn btn-primary text-white my-4 w-full' />
+          <button className='btn btn-primary w-full my-5 text-white text-lg'>
+            {loading ? <ButtonSpinner /> : 'Sign Up'}
+          </button>
         </form>
         <p>Already in Camera Crew ? <Link to='/login' className='text-primary font-semibold' >Please Login</Link></p>
         <div className="divider">OR</div>
-        <button className='btn btn-outline btn-primary w-full'><img src={google} className='h-8 mr-2' alt="google" /> Continue with Google</button>
+        <button onClick={handleGoogleSign} className='btn btn-outline btn-primary w-full text-lg'><img src={google} className='h-8 mr-2' alt="google" /> Continue with Google</button>
       </div>
     </div>
   );
