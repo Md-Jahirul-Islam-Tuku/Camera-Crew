@@ -5,7 +5,7 @@ import ValuableClients from '../Components/Home/ValuableClients';
 
 const Home = () => {
   return (
-    <div className='mb-10'>
+    <div className='mb-10 pt-32 px-5 lg:px-0'>
       <Banner/>
       <Categories/>
       <ValuableClients/>

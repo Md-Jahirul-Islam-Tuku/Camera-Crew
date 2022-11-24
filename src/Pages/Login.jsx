@@ -43,8 +43,8 @@ const Login = () => {
     })
   }
   return (
-    <div className='lg:h-[89vh] flex justify-center'>
-      <div className='lg:w-1/3 mx-2 lg:mx-0 shadow-xl mt-8 mb-80 p-5 rounded-xl bg-white'>
+    <div className='lg:h-[100vh] flex justify-center pt-32'>
+      <div className='lg:w-[40vw] mx-2 lg:mx-0 shadow-xl mt-20 mb-48 p-10 rounded-xl bg-white'>
         <h2 className='text-2xl font-semibold mb-5'>Please Login</h2>
         <form onSubmit={handleSubmit(handleLogin)}>
           <div className='form-control w-full'>
