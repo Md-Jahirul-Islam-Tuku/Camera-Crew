@@ -49,8 +49,8 @@ const Navbar = () => {
             <svg className="fill-current" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z" /></svg>
           </Link>
           <ul className="p-2 bg-white rounded-lg">
-            <li><Link to='/' className='rounded-lg' >All Sellers</Link></li>
-            <li><Link to='/' className='rounded-lg' >All Buyers</Link></li>
+            <li><Link to='/dashboard/allSeller' className='rounded-lg' >All Sellers</Link></li>
+            <li><Link to='/allBuyer' className='rounded-lg' >All Buyers</Link></li>
             <li><Link to='/' className='rounded-lg' >Reported Items</Link></li>
           </ul>
         </li>

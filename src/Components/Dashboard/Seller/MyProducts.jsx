@@ -82,7 +82,7 @@ const MyProducts = () => {
             imageWidth: 350,
             imageHeight: 350,
             imageAlt: 'Product image',
-            title: 'Advertised Successfully',
+            title: 'To Advertisement Successfully',
             text: `${product?.productName}`,
             showConfirmButton: true,
           })
