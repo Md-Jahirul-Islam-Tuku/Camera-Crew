@@ -10,7 +10,7 @@ const AddProduct = () => {
   const { register, formState: { errors }, handleSubmit } = useForm();
   const navigate = useNavigate();
   const handleAddDoctor = data => {
-    console.log(data);
+    setLoading(true)
     const image = data.image[0];
     const formData = new FormData();
     formData.append('image', image);
@@ -40,7 +40,6 @@ const AddProduct = () => {
                 showConfirmButton: false,
                 timer: 1500
               })
-              console.log(product);
               setLoading(false)
               navigate('/dashboard/myProducts')
             }
@@ -50,9 +49,9 @@ const AddProduct = () => {
   }
 
   return (
-    <div className='mx-3 pt-32 bg-gray-200 h-[100vh]'>
-      <h1 className='text-3xl my-3 font-semibold text-primary'>Add A Product</h1>
-      <form onSubmit={handleSubmit(handleAddDoctor)} className='w-[48vw] mx-auto bg-base-100 p-10 rounded-xl text-primary'>
+    <div className='mx-3 bg-gray-200 h-[100vh]'>
+      <h1 className='text-3xl py-5 font-semibold text-primary'>Add A Product</h1>
+      <form onSubmit={handleSubmit(handleAddDoctor)} className='w-[48vw] mx-auto bg-base-100 p-10 rounded-xl text-primary ng-untouched ng-pristine ng-valid drop-shadow-[-15px_15px_0_rgba(0,0,0,0.25)]'>
         <div className='flex items-center justify-between text-lg input-bordered input'>
           <input type='text' {...register("userName")} className='bg-base-100 text-primary' value={user?.displayName} readOnly />
           <input type='text' {...register("email")} className='bg-base-100 text-primary' value={user?.email} readOnly />
@@ -89,6 +88,25 @@ const AddProduct = () => {
             </select>
             {errors.category && <p className='text-red-600 text-left'>{errors.category?.message}</p>}
           </div>
+        </div>
+        <div className='flex justify-center my-5'>
+          <div className='form-control w-1/2'>
+            <input placeholder='Mobile number' type='text' {...register("mobile", { required: 'Email address is required' })} className='rounded-lg input-bordered input' />
+            {errors.mobile && <p className='text-red-600 text-left'>{errors.mobile?.message}</p>}
+          </div>
+          <div className='form-control w-1/3'>
+            <select type='text' {...register("condition", { required: 'Condition is required' })} className="select select-bordered w-full" >
+              <option value='Category' selected disabled>Condition</option>
+              <option value="Excellent">Excellent</option>
+              <option value="Good">Good</option>
+              <option value="Fair">Fair</option>
+            </select>
+            {errors.condition && <p className='text-red-600 text-left'>{errors.condition?.message}</p>}
+          </div>
+        </div>
+        <div>
+          <textarea placeholder='Description' {...register("description", { required: 'Description is required' })} className='w-full input input-bordered p-3 h-16 text-lg'></textarea>
+          {errors.description && <p className='text-red-600 text-left'>{errors.description?.message}</p>}
         </div>
         <div className="mt-7">
           <label className="block font-medium mb-2">Upload Product Photo</label>

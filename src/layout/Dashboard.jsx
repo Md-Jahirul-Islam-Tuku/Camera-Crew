@@ -4,7 +4,7 @@ import Navbar from '../Shared/Navbar';
 
 const Dashboard = () => {
   return (
-    <div>
+    <div className='lg:w-[1280px] mx-auto'>
       <Navbar/>
       <Outlet/>
     </div>

@@ -4,6 +4,7 @@ import MyBuyers from "../Components/Dashboard/Seller/MyBuyers";
 import MyProducts from "../Components/Dashboard/Seller/MyProducts";
 import Dashboard from "../layout/Dashboard";
 import Main from "../layout/Main";
+import CategoryProducts from "../Pages/CategoryProducts";
 import ErrorPage from "../Pages/ErrorPage";
 import Home from "../Pages/Home";
 import Login from "../Pages/Login";
@@ -26,6 +27,11 @@ const router = createBrowserRouter([
       {
         path: 'signup',
         element: <SignUp />
+      },
+      {
+        path: 'categoryProducts/:category',
+        element: <CategoryProducts />,
+        loader: ({params}) => fetch(`http://localhost:5000/categoryProducts/${params.category}`)
       },
     ]
   },
