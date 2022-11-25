@@ -24,7 +24,7 @@ const Navbar = () => {
     <li><Link to='/' className='rounded-lg' >Home</Link></li>
     <li><Link to='/blog' className='rounded-lg' >Blog</Link></li>
     {
-      dbUser?.role === 'Buyer' && user && <li><Link to='/myorders' className='rounded-lg' >My Orders</Link></li>
+      dbUser?.role === 'Buyer' && user && <li><Link to='/myOrders' className='rounded-lg' >My Orders</Link></li>
     }
     {
       dbUser?.role === 'Seller' && user && <>
