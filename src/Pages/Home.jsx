@@ -1,14 +1,14 @@
 import React from 'react';
 import Banner from '../Components/Home/Banner';
 import Categories from '../Components/Home/Categories';
-import FeaturedProducts from '../Components/Home/FeaturedProducts';
+import Advertisements from '../Components/Home/Advertisements';
 import ValuableClients from '../Components/Home/ValuableClients';
 
 const Home = () => {
   return (
     <div className='mb-10 pt-32 px-5 lg:px-0'>
       <Banner/>
-      <FeaturedProducts/>
+      <Advertisements />
       <Categories/>
       <ValuableClients/>
     </div>

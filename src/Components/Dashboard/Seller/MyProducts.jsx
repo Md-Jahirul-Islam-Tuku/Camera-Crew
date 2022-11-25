@@ -1,9 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
 import { AuthContext } from '../../../Context/AuthProvider';
+import LoadingSpinner from '../../Spinner/LoadingSpinner';
 
 const MyProducts = () => {
-  const { user } = useContext(AuthContext);
+  const { user, loading } = useContext(AuthContext);
   const [products, setProducts] = useState([]);
   const [refresh, setRefresh] = useState(true)
   useEffect(() => {
@@ -65,7 +66,7 @@ const MyProducts = () => {
       }
     })
   }
-  const handleAdvertisement = product =>{
+  const handleAdvertisement = product => {
     fetch(`http://localhost:5000/products/${product?._id}`, {
       method: 'PUT',
       headers: {
@@ -109,7 +110,7 @@ const MyProducts = () => {
           </thead>
           <tbody>
             {
-              products.map((product, i) =>
+              loading ? <LoadingSpinner /> : products.map((product, i) =>
                 <tr key={product._id}>
                   <th>{i + 1}</th>
                   <td>
@@ -123,7 +124,7 @@ const MyProducts = () => {
                   <td>{product.category}</td>
                   <td>{product.resalePrice} <span className='ml-1'>BDT*</span></td>
                   <td>{product.originalPrice} <span className='ml-1'>BDT*</span></td>
-                  <td>{product.advertisement ? <p className='text-lg text-green-600'>Advertised</p> : <button onClick={() => handleAdvertisement(product)} className='btn btn-xs font-semibold text-white btn-primary'>Send to Adv</button> }</td>
+                  <td>{product.advertisement ? <p className='text-lg text-green-600'>Advertised</p> : <button onClick={() => handleAdvertisement(product)} className='btn btn-xs font-semibold text-white btn-primary'>Send to Adv</button>}</td>
                   <td><button onClick={() => handleDelete(product)} className='btn btn-xs font-semibold text-white btn-error'>Delete</button></td>
                 </tr>
               )
