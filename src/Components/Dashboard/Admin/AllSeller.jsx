@@ -7,7 +7,10 @@ import { CheckBadgeIcon } from '@heroicons/react/24/solid'
 const AllSeller = () => {
   const { loading } = useContext(AuthContext);
   const [sellers, setSellers] = useState([]);
-  const [refresh, setRefresh] = useState(true)
+  const [refresh, setRefresh] = useState(true);
+
+  let [changeText, setChangeText] = useState(false);
+
   useEffect(() => {
     fetch('http://localhost:5000/users?role=Seller')
       .then(res => res.json())
@@ -16,33 +19,39 @@ const AllSeller = () => {
         setRefresh(!refresh)
       })
   }, [refresh])
-  const handleProducts = seller =>{
-    fetch(`http://localhost:5000/value/${seller?.email}`, {
-      method: 'PUT'
-    }).then(res=>res.json()).then(()=>{})
-  }
-
   const handleBadge = seller => {
+    const email = seller.email;
+    setChangeText(!changeText);
     fetch(`http://localhost:5000/seller/${seller?._id}`, {
       method: 'PUT',
       headers: {
+        'content-type': 'application/json',
         authorization: `Bearer ${localStorage.getItem('cameraCrew-token')}`
-      }
+      },
+      body: JSON.stringify({ changeText, email })
     })
-      .then(res => {
-        handleProducts(seller);
-        return res.json();
-      })
+      .then(res => res.json())
       .then(data => {
-        if (data.modifiedCount) {
+        console.log(data);
+        if (data.result.modifiedCount && data.value.modifiedCount && changeText) {
           Swal.fire({
             icon: 'success',
             imageUrl: `${seller?.img}`,
             imageWidth: 350,
             imageHeight: 350,
-            imageAlt: 'Product image',
-            title: 'Advertised Successfully',
-            text: `${seller?.name}`,
+            imageAlt: 'Seller image',
+            title: `${seller?.name} verified`,
+            showConfirmButton: true,
+          })
+        }
+        else if (data.result.modifiedCount && data.value.modifiedCount && !changeText){
+          Swal.fire({
+            icon: 'error',
+            imageUrl: `${seller?.img}`,
+            imageWidth: 350,
+            imageHeight: 350,
+            imageAlt: 'Seller image',
+            title: `${seller?.name} unverified`,
             showConfirmButton: true,
           })
         }
@@ -51,7 +60,7 @@ const AllSeller = () => {
   }
   return (
     <div className='min-h-[100vh] bg-gray-200 font-semibold text-primary'>
-      <h1 className='text-3xl py-5'>All Sellers</h1>
+      <h1 className='text-3xl py-5'>Total Sellers: {sellers.length}</h1>
       <div className="overflow-x-auto mx-20">
         <table className="table w-full table-normal">
           <thead>
@@ -60,7 +69,7 @@ const AllSeller = () => {
               <th></th>
               <th>Name</th>
               <th>Email</th>
-              <th>Provide Badge</th>
+              <th>Verification</th>
               <th>Action</th>
             </tr>
           </thead>
@@ -78,7 +87,15 @@ const AllSeller = () => {
                   </td>
                   <td>{seller.name}</td>
                   <td>{seller.email}</td>
-                  <td>{seller.badge ? <p className='text-lg text-green-600 flex items-center'>Sent <CheckBadgeIcon className="h-6 w-6 text-blue-500 ml-2" /></p> : <button onClick={() => handleBadge(seller)} className='btn btn-xs font-semibold text-white btn-primary'>Send Badge</button>}</td>
+                  <td>
+                    {seller.badge ? <button onClick={() => handleBadge(seller)} className='btn btn-xs font-semibold text-white btn-primary'>unverify</button> :
+                      <>
+                        <div className='flex items-center'>
+                          <button onClick={() => handleBadge(seller)} className='btn btn-xs font-semibold text-white btn-primary'>verify</button>
+                          <CheckBadgeIcon className='h-6 w-6 text-blue-600 ml-1' />
+                        </div>
+                      </>}
+                  </td>
                   <td><button className='btn btn-xs font-semibold text-white btn-error'>Delete</button></td>
                 </tr>
               )

@@ -5,12 +5,12 @@ import profile from '../Assets/img/icon/profile.png';
 import { AuthContext } from '../Context/AuthProvider';
 
 const Navbar = () => {
-  const [dbUser, setDbUser] = useState(null);
+  const [dbUser, setDbUser] = useState({});
   const { user, logOut } = useContext(AuthContext);
   const navigate = useNavigate()
   const email = user?.email;
   useEffect(() => {
-    fetch(`http://localhost:5000/user/${email}`)
+    fetch(`http://localhost:5000/users/${email}`)
       .then(res => res.json())
       .then(data => {
         setDbUser(data);
@@ -50,7 +50,7 @@ const Navbar = () => {
           </Link>
           <ul className="p-2 bg-white rounded-lg">
             <li><Link to='/dashboard/allSeller' className='rounded-lg' >All Sellers</Link></li>
-            <li><Link to='/allBuyer' className='rounded-lg' >All Buyers</Link></li>
+            <li><Link to='/dashboard/allBuyer' className='rounded-lg' >All Buyers</Link></li>
             <li><Link to='/' className='rounded-lg' >Reported Items</Link></li>
           </ul>
         </li>

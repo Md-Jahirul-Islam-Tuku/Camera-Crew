@@ -14,6 +14,7 @@ const SignUp = () => {
   const location = useLocation();
   const from = location.state?.from?.pathname || '/';
   const handleSignUp = data => {
+    setLoading(true)
     const { role, name, email, password } = data;
     const image = data.image[0];
     const formData = new FormData();
