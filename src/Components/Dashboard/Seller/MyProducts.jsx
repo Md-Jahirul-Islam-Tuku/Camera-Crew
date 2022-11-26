@@ -93,6 +93,7 @@ const MyProducts = () => {
 
   return (
     <div className='min-h-[100vh] bg-gray-200 font-semibold text-primary'>
+      {loading && <LoadingSpinner />}
       <h1 className='text-3xl py-5'>{user?.displayName} your total products: {products.length}</h1>
       <div className="overflow-x-auto mx-20">
         <table className="table w-full table-normal">
@@ -110,7 +111,7 @@ const MyProducts = () => {
           </thead>
           <tbody>
             {
-              loading ? <LoadingSpinner /> : products.map((product, i) =>
+              products.map((product, i) =>
                 <tr key={product._id}>
                   <th>{i + 1}</th>
                   <td>

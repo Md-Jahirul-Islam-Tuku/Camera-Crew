@@ -5,8 +5,6 @@ export const setAuthToken = user => {
     img: user.userImage || user.photoURL,
     role: user.role,
   }
-  console.log(currentUser);
-  //   Save user in db & get token
   fetch(`http://localhost:5000/user/${user?.email}`, {
     method: 'PUT',
     headers: {
@@ -16,9 +14,6 @@ export const setAuthToken = user => {
   })
     .then(res => res.json())
     .then(data => {
-      console.log(data)
-
-      //Save token in LocalStorage
       localStorage.setItem('cameraCrew-token', data.token)
     })
 }

@@ -9,7 +9,7 @@ const AddProduct = () => {
   const { user, loading, setLoading } = useContext(AuthContext);
   const { register, formState: { errors }, handleSubmit } = useForm();
   const navigate = useNavigate();
-  const handleAddDoctor = data => {
+  const handleAddProduct = data => {
     setLoading(true)
     const image = data.image[0];
     const formData = new FormData();
@@ -51,7 +51,7 @@ const AddProduct = () => {
   return (
     <div className='mx-3 bg-gray-200 h-[100vh]'>
       <h1 className='text-3xl py-5 font-semibold text-primary'>Add A Product</h1>
-      <form onSubmit={handleSubmit(handleAddDoctor)} className='w-[48vw] mx-auto bg-base-100 p-10 rounded-xl text-primary ng-untouched ng-pristine ng-valid drop-shadow-[-15px_15px_0_rgba(0,0,0,0.25)]'>
+      <form onSubmit={handleSubmit(handleAddProduct)} className='w-[48vw] mx-auto bg-base-100 p-10 rounded-xl text-primary ng-untouched ng-pristine ng-valid drop-shadow-[-15px_15px_0_rgba(0,0,0,0.25)]'>
         <div className='flex items-center justify-between text-lg input-bordered input'>
           <input type='text' {...register("userName")} className='bg-base-100 text-primary' value={user?.displayName} readOnly />
           <input type='text' {...register("email")} className='bg-base-100 text-primary' value={user?.email} readOnly />

@@ -10,7 +10,7 @@ const Categories = () => {
     fetch('http://localhost:5000/categories').then(res => res.json()).then(data => setCategories(data))
   }, [])
   return (
-    <div>
+    <>
       {loading ? <LoadingSpinner /> :
         <div div className='mt-12' >
           <h1 className='my-5 text-3xl text-primary font-semibold text-left'>Shop Categories</h1>
@@ -21,7 +21,7 @@ const Categories = () => {
           </div>
         </div >
       }
-    </div>
+    </>
   );
 };
 

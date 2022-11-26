@@ -51,6 +51,7 @@ const AllBuyer = () => {
   }
   return (
     <div className='min-h-[100vh] bg-gray-200 font-semibold text-primary'>
+      {loading && <LoadingSpinner />}
       <h1 className='text-3xl py-5'>Total Buyers: {buyers.length}</h1>
       <div className="overflow-x-auto mx-20">
         <table className="table w-full table-normal">
@@ -65,14 +66,13 @@ const AllBuyer = () => {
             </tr>
           </thead>
           <tbody>
-            {
-              loading ? <LoadingSpinner /> : buyers.map((buyer, i) =>
+            {buyers.map((buyer, i) =>
                 <tr key={buyer._id}>
                   <th>{i + 1}</th>
                   <td>
                     <div className="avatar">
                       <div className="w-12 rounded-xl">
-                        <img src={buyer?.img} alt="" />
+                        <img src={buyer?.img} alt={buyer.name} />
                       </div>
                     </div>
                   </td>

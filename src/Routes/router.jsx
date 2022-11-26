@@ -10,7 +10,9 @@ import CategoryProducts from "../Pages/CategoryProducts";
 import ErrorPage from "../Pages/ErrorPage";
 import Home from "../Pages/Home";
 import Login from "../Pages/Login";
+import MyOrders from "../Pages/MyOrders";
 import SignUp from "../Pages/SignUp";
+import Blog from "../Shared/Blog";
 
 const router = createBrowserRouter([
   {
@@ -29,6 +31,15 @@ const router = createBrowserRouter([
       {
         path: 'signup',
         element: <SignUp />
+      },
+      {
+        path: 'blog',
+        element: <Blog />
+      },
+      {
+        path: 'myOrders/:email',
+        element: <MyOrders />,
+        loader: ({ params }) => fetch(`http://localhost:5000/myOrders/${params.email}`)
       },
       {
         path: 'categoryProducts/:category',

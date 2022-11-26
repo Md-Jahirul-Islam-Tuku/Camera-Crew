@@ -3,19 +3,12 @@ import { Link, useNavigate } from 'react-router-dom';
 import logo from '../Assets/img/icon/favicon.png';
 import profile from '../Assets/img/icon/profile.png';
 import { AuthContext } from '../Context/AuthProvider';
+import { GeneralContext } from '../Context/GeneralProvider';
 
 const Navbar = () => {
-  const [dbUser, setDbUser] = useState({});
   const { user, logOut } = useContext(AuthContext);
+  const { dbUser } = useContext(GeneralContext);
   const navigate = useNavigate()
-  const email = user?.email;
-  useEffect(() => {
-    fetch(`http://localhost:5000/users/${email}`)
-      .then(res => res.json())
-      .then(data => {
-        setDbUser(data);
-      })
-  }, [email, user])
   const userLogOut = () => {
     logOut();
     navigate('/')
@@ -24,10 +17,10 @@ const Navbar = () => {
     <li><Link to='/' className='rounded-lg' >Home</Link></li>
     <li><Link to='/blog' className='rounded-lg' >Blog</Link></li>
     {
-      dbUser?.role === 'Buyer' && user && <li><Link to='/myOrders' className='rounded-lg' >My Orders</Link></li>
+      dbUser?.role === "Buyer" && user && <li><Link to={`/myOrders/${user?.email}`} className='rounded-lg' >My Orders</Link></li>
     }
     {
-      dbUser?.role === 'Seller' && user && <>
+      dbUser?.role === "Seller" && user && <>
         <li tabIndex={0}>
           <Link to='/dashboard' className="justify-between rounded-lg">
             Dashboard
@@ -42,7 +35,7 @@ const Navbar = () => {
       </>
     }
     {
-      dbUser?.role === 'admin' && user && <>
+      dbUser?.role === "admin" && user && <>
         <li tabIndex={0}>
           <Link className="justify-between">
             Dashboard
