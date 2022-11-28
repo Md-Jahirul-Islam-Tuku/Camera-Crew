@@ -3,11 +3,14 @@ import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { AuthContext } from '../../../Context/AuthProvider';
+import { GeneralContext } from '../../../Context/GeneralProvider';
 import ButtonSpinner from '../../Spinner/buttonSpinner';
 
 const AddProduct = () => {
   const { user, loading, setLoading } = useContext(AuthContext);
   const { register, formState: { errors }, handleSubmit } = useForm();
+  const {dbUser}= useContext(GeneralContext);
+  const badge = dbUser?.role;
   const navigate = useNavigate();
   const handleAddProduct = data => {
     setLoading(true)
@@ -24,7 +27,7 @@ const AddProduct = () => {
       .then(imgData => {
         if (imgData.success) {
           const image = imgData.data.url;
-          const product = { ...data, image };
+          const product = { ...data, image, badge };
           fetch('http://localhost:5000/products', {
             method: 'POST',
             headers: {

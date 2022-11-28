@@ -1,6 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import AllBuyer from "../Components/Dashboard/Admin/AllBuyer";
 import AllSeller from "../Components/Dashboard/Admin/AllSeller";
+import ReportedItems from "../Components/Dashboard/Admin/ReportedItems";
 import AddProduct from "../Components/Dashboard/Seller/AddProduct";
 import MyBuyers from "../Components/Dashboard/Seller/MyBuyers";
 import MyProducts from "../Components/Dashboard/Seller/MyProducts";
@@ -13,6 +14,7 @@ import Login from "../Pages/Login";
 import MyOrders from "../Pages/MyOrders";
 import SignUp from "../Pages/SignUp";
 import Blog from "../Shared/Blog";
+import PrivateRoute from "./PrivateRoute";
 
 const router = createBrowserRouter([
   {
@@ -37,14 +39,13 @@ const router = createBrowserRouter([
         element: <Blog />
       },
       {
-        path: 'myOrders/:email',
-        element: <MyOrders />,
-        loader: ({ params }) => fetch(`http://localhost:5000/myOrders/${params.email}`)
+        path: 'myOrders',
+        element: <MyOrders />
       },
       {
         path: 'categoryProducts/:category',
-        element: <CategoryProducts />,
-        loader: ({params}) => fetch(`http://localhost:5000/categoryProducts/${params.category}`)
+        element: <PrivateRoute><CategoryProducts /></PrivateRoute>,
+        loader: ({params}) => fetch(`http://localhost:5000/categoryProducts/${params?.category}`)
       },
     ]
   },
@@ -71,6 +72,10 @@ const router = createBrowserRouter([
       {
         path: '/dashboard/allBuyer',
         element: <AllBuyer />
+      },
+      {
+        path: '/dashboard/reportedItems',
+        element: <ReportedItems />
       },
     ]
   }

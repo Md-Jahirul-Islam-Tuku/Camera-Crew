@@ -101,10 +101,8 @@ const MyProducts = () => {
             <tr>
               <th></th>
               <th></th>
-              <th>Name</th>
-              <th>Category</th>
-              <th>Resale Price</th>
-              <th>Original Price</th>
+              <th>Price</th>
+              <th>Status</th>
               <th>Advertisement</th>
               <th>Action</th>
             </tr>
@@ -115,16 +113,20 @@ const MyProducts = () => {
                 <tr key={product._id}>
                   <th>{i + 1}</th>
                   <td>
-                    <div className="avatar">
-                      <div className="w-12 rounded-xl">
-                        <img src={product?.image} alt="" />
+                    <div className="flex items-center space-x-3">
+                      <div className="avatar">
+                        <div className="mask mask-squircle w-12 h-12">
+                          <img src={product.image} alt="Avatar Tailwind CSS Component" />
+                        </div>
+                      </div>
+                      <div>
+                        <div className="font-bold">{product.productName}</div>
+                        <div className="text-sm opacity-50">{product.category}</div>
                       </div>
                     </div>
                   </td>
-                  <td>{product.productName}</td>
-                  <td>{product.category}</td>
-                  <td>{product.resalePrice} <span className='ml-1'>BDT*</span></td>
-                  <td>{product.originalPrice} <span className='ml-1'>BDT*</span></td>
+                  <td className='text-lg'>Tk. {product.resalePrice}</td>
+                  <td className='text-lg'>Available</td>
                   <td>{product.advertisement ? <p className='text-lg text-green-600'>Advertised</p> : <button onClick={() => handleAdvertisement(product)} className='btn btn-xs font-semibold text-white btn-primary'>Send to Adv</button>}</td>
                   <td><button onClick={() => handleDelete(product)} className='btn btn-xs font-semibold text-white btn-error'>Delete</button></td>
                 </tr>

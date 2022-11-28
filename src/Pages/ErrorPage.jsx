@@ -9,7 +9,6 @@ const ErrorPage = () => {
           <h2 className="font-extrabold text-9xl dark:text-gray-600 flex items-center">
             4<div className='animate-bounce'>0</div>4
           </h2>
-          
           <p className="text-3xl text-primary">Sorry, we couldn't find this page.</p>
           <Link to='/' className="px-8 py-3 font-semibold rounded bg-primary">Back to homepage</Link>
         </div>

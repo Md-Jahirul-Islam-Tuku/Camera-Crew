@@ -41,8 +41,14 @@ const SignUp = () => {
               navigate(from, { replace: true });
             })
             .catch(error => {
-              console.error(error);
-              setLoading(false)
+              if (error.message === 'Firebase: Error (auth/email-already-in-use).') {
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Email already in use.',
+                  showConfirmButton: false,
+                })
+                setLoading(false)
+              }
             })
         }
       })
@@ -70,7 +76,7 @@ const SignUp = () => {
               <span className="label-email">Photo</span>
             </label>
             <input type='file' name='image' {...register("image", { required: 'Image required' })} className='rounded-lg input-bordered input p-2' />
-            {errors.image && <p className='text-red-600 text-left'>{errors.image?.message}</p>}
+            {errors.image && <p className='text-red-600 text-left'>{errors}</p>}
           </div>
           <div className='form-control w-full'>
             <label className="label">

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 
 const CategoryCard = ({ category }) => {
   const { name, img } = category;
+
   return (
     <div className="card card-compact border bg-white hover:drop-shadow-[-10px_10px_0_rgba(0,0,0,0.1)]">
       <figure className='h-96 p-5'>

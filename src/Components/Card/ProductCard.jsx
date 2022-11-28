@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { CheckBadgeIcon } from '@heroicons/react/24/solid'
 import { AuthContext } from '../../Context/AuthProvider';
 import { GeneralContext } from '../../Context/GeneralProvider';
+import Swal from 'sweetalert2';
 
 const ProductCard = ({ product, handleOrders }) => {
   const { _id, image, productName, location, resalePrice, originalPrice, usesYears, category, userName, mobile, condition, badge } = product;
@@ -11,6 +12,15 @@ const ProductCard = ({ product, handleOrders }) => {
   const booked = bookings.filter(book => book.productId === _id && book.userEmail === user?.email)
   const id = booked[0]?.productId;
   const email = booked[0]?.userEmail;
+
+  const handleDisableButton =()=>{
+    Swal.fire({
+      icon: 'info',
+      title: "Booking active only for Buyer",
+      text: "Please login as a buyer",
+      showConfirmButton: false,
+    })
+  }
   return (
     <div className="card card-compact bg-white shadow-xl">
       <figure><img src={image} alt="Shoes" className='h-56 px-2' /></figure>
@@ -29,9 +39,9 @@ const ProductCard = ({ product, handleOrders }) => {
           {
             dbUser?.role === "Buyer" ? <button onClick={() => handleOrders(product)} className={`btn btn-primary btn-sm text-white ${id === _id && user?.email === email && 'btn-disabled bg-blue-200'}`}>
               Book Now
-            </button> : <button className='btn btn-sm text-white btn-disabled bg-blue-200'>
+            </button> : <div><button onClick={handleDisableButton} className='btn btn-sm text-white btn-primary'>
               Book Now
-            </button>
+            </button></div>
           }
         </div>
       </div>

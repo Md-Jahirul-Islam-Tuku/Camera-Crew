@@ -3,19 +3,20 @@ import Swal from 'sweetalert2';
 import { AuthContext } from '../../../Context/AuthProvider';
 import LoadingSpinner from '../../Spinner/LoadingSpinner';
 import { CheckBadgeIcon } from '@heroicons/react/24/solid'
+import { useQuery } from '@tanstack/react-query';
 
 const AllBuyer = () => {
   const { loading } = useContext(AuthContext);
-  const [buyers, setBuyers] = useState([]);
-  const [refresh, setRefresh] = useState(true)
-  useEffect(() => {
-    fetch('http://localhost:5000/users?role=Buyer')
-      .then(res => res.json())
-      .then(data => {
-        setBuyers(data)
-        setRefresh(!refresh)
-      })
-  }, [refresh])
+
+  const { data: buyers = [], refetch } = useQuery({
+    queryKey: ['buyers'],
+    queryFn: () => fetch('http://localhost:5000/users?role=Buyer').then(res => res.json())
+  })
+  const { data: bookings = [], } = useQuery({
+    queryKey: ['bookings'],
+    queryFn: () => fetch('http://localhost:5000/booking').then(res => res.json())
+  })
+
   const handleProducts = buyer => {
     fetch(`http://localhost:5000/value/${buyer?.email}`, {
       method: 'PUT'
@@ -61,27 +62,29 @@ const AllBuyer = () => {
               <th></th>
               <th>Name</th>
               <th>Email</th>
-              <th>Provide Badge</th>
+              <th>Total Bookings</th>
               <th>Action</th>
             </tr>
           </thead>
           <tbody>
             {buyers.map((buyer, i) =>
-                <tr key={buyer._id}>
-                  <th>{i + 1}</th>
-                  <td>
-                    <div className="avatar">
-                      <div className="w-12 rounded-xl">
-                        <img src={buyer?.img} alt={buyer.name} />
-                      </div>
+              <tr key={buyer._id}>
+                <th>{i + 1}</th>
+                <td>
+                  <div className="avatar">
+                    <div className="w-12 rounded-xl">
+                      <img src={buyer?.img} alt={buyer.name} />
                     </div>
-                  </td>
-                  <td>{buyer.name}</td>
-                  <td>{buyer.email}</td>
-                  <td>{buyer.badge ? <p className='text-lg text-green-600 flex items-center'>Sent <CheckBadgeIcon className="h-6 w-6 text-blue-500 ml-2" /></p> : <button onClick={() => handleBadge(buyer)} className='btn btn-xs font-semibold text-white btn-primary'>Send Badge</button>}</td>
-                  <td><button className='btn btn-xs font-semibold text-white btn-error'>Delete</button></td>
-                </tr>
-              )
+                  </div>
+                </td>
+                <td>{buyer.name}</td>
+                <td>{buyer.email}</td>
+                <td className='text-lg font-semibold'>
+                  {bookings.length}
+                </td>
+                <td><button className='btn btn-xs font-semibold text-white btn-error'>Delete</button></td>
+              </tr>
+            )
             }
           </tbody>
         </table>

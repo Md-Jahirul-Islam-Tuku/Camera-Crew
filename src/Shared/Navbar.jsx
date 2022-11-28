@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import logo from '../Assets/img/icon/favicon.png';
 import profile from '../Assets/img/icon/profile.png';
@@ -17,7 +17,7 @@ const Navbar = () => {
     <li><Link to='/' className='rounded-lg' >Home</Link></li>
     <li><Link to='/blog' className='rounded-lg' >Blog</Link></li>
     {
-      dbUser?.role === "Buyer" && user && <li><Link to={`/myOrders/${user?.email}`} className='rounded-lg' >My Orders</Link></li>
+      dbUser?.role === "Buyer" && user && <li><Link to={`/myOrders`} className='rounded-lg' >My Orders</Link></li>
     }
     {
       dbUser?.role === "Seller" && user && <>
@@ -44,7 +44,7 @@ const Navbar = () => {
           <ul className="p-2 bg-white rounded-lg">
             <li><Link to='/dashboard/allSeller' className='rounded-lg' >All Sellers</Link></li>
             <li><Link to='/dashboard/allBuyer' className='rounded-lg' >All Buyers</Link></li>
-            <li><Link to='/' className='rounded-lg' >Reported Items</Link></li>
+            <li><Link to='/dashboard/reportedItems' className='rounded-lg' >Reported Items</Link></li>
           </ul>
         </li>
       </>

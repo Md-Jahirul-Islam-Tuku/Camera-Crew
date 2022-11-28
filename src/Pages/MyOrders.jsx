@@ -3,21 +3,27 @@ import { useLoaderData } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import LoadingSpinner from '../Components/Spinner/LoadingSpinner';
 import { AuthContext } from '../Context/AuthProvider';
+import { GeneralContext } from '../Context/GeneralProvider';
 
 const MyOrders = () => {
   const { user, loading } = useContext(AuthContext);
-  // const [products, setProducts] = useState([]);
-  // const [refresh, setRefresh] = useState(true)
-  // useEffect(() => {
-  //   fetch(`http://localhost:5000/products/${user?.email}`)
-  //     .then(res => res.json())
-  //     .then(data => {
-  //       setProducts(data)
-  //       setRefresh(!refresh)
-  //     })
-  // }, [user?.email, refresh])
-
-  const products = useLoaderData();
+  const {refresh, setRefresh}=useContext(GeneralContext);
+  const [orders, setOrders]= useState([])
+  useEffect(() => {
+    fetch(`http://localhost:5000/myOrders/${user?.email}`,
+      {
+        method: 'GET',
+        headers: {
+          'content-type': 'application/json',
+          authorization: `Bearer ${localStorage.getItem('cameraCrew-token')}`,
+        },
+      }
+    )
+      .then(res => res.json())
+      .then(data => {
+        setOrders(data)
+      })
+  }, [user?.email, refresh])
 
   const handleDelete = product => {
     const swalWithBootstrapButtons = Swal.mixin({
@@ -27,7 +33,6 @@ const MyOrders = () => {
       },
       buttonsStyling: false
     })
-
     swalWithBootstrapButtons.fire({
       title: 'Are you sure?',
       text: `You won't be able to revert Dr. ${product?.productName}`,
@@ -41,7 +46,7 @@ const MyOrders = () => {
       reverseButtons: true
     }).then((result) => {
       if (result.isConfirmed) {
-        fetch(`http://localhost:5000/products/${product?._id}`, {
+        fetch(`http://localhost:5000/bookings/${product?._id}`, {
           method: 'DELETE',
           headers: {
             authorization: `Bearer ${localStorage.getItem('cameraCrew-token')}`
@@ -55,6 +60,7 @@ const MyOrders = () => {
                 `${product?.name} has been deleted.`,
                 'success'
               )
+              setRefresh(!refresh)
             }
           })
 
@@ -97,7 +103,7 @@ const MyOrders = () => {
   return (
     <div className='min-h-[100vh] bg-gray-200 font-semibold text-primary'>
       {loading && <LoadingSpinner />}
-      <h1 className='text-3xl py-5'>{user?.displayName} your total bookings: {products.length}</h1>
+      <h1 className='text-3xl py-5'>{user?.displayName} your total bookings: {orders.length}</h1>
       <div className="overflow-x-auto mx-20">
         <table className="table w-full table-normal">
           <thead>
@@ -113,7 +119,7 @@ const MyOrders = () => {
             </tr>
           </thead>
           <tbody>
-            {products.map((product, i) =>
+            {orders.map((product, i) =>
                 <tr key={product._id}>
                   <th>{i + 1}</th>
                   <td>
@@ -127,7 +133,7 @@ const MyOrders = () => {
                   <td>{product.category}</td>
                   <td>{product.resalePrice} <span className='ml-1'>BDT*</span></td>
                   <td>{product.originalPrice} <span className='ml-1'>BDT*</span></td>
-                  <td>{product.advertisement ? <p className='text-lg text-green-600'>Advertised</p> : <button onClick={() => handleAdvertisement(product)} className='btn btn-xs font-semibold text-white btn-primary'>Send to Adv</button>}</td>
+                  <td>{product.advertisement ? <p className='text-lg text-green-600'>Paid</p> : <button onClick={() => handleAdvertisement(product)} className='btn btn-xs font-semibold text-white btn-primary'>Payment</button>}</td>
                   <td><button onClick={() => handleDelete(product)} className='btn btn-xs font-semibold text-white btn-error'>Delete</button></td>
                 </tr>
               )

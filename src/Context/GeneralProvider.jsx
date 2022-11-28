@@ -1,34 +1,55 @@
+import { useQuery } from '@tanstack/react-query';
 import React, { createContext, useContext, useEffect, useState } from 'react';
+import Swal from 'sweetalert2';
 import { AuthContext } from './AuthProvider';
 
 
 export const GeneralContext = createContext();
-const GeneralProvider = ({children}) => {
-  const {user}=useContext(AuthContext)
+const GeneralProvider = ({ children }) => {
+  const { user } = useContext(AuthContext)
   const [dbUser, setDbUser] = useState({});
-  const [bookings, setBookings] = useState([]);
-
-  useEffect(() => {
-    fetch(`http://localhost:5000/users/${user?.email}`)
-      .then(res => res.json())
-      .then(data => setDbUser(data))
-      .catch(err => console.log('error', err))
-  }, [user])
-
   const [refresh, setRefresh] = useState(false);
   useEffect(() => {
-    fetch('http://localhost:5000/booking')
-      .then(res => res.json())
-      .then(data => {
-        setBookings(data)
-        setRefresh(!refresh)
-      })
-  })
+    fetch(`http://localhost:5000/users/${user?.email}`, {
+      method: 'GET',
+      headers: {
+        authorization: `Bearer ${localStorage.getItem('cameraCrew-token')}`
+      }
+    })
+      .then(res=>res.json())
+      .then(data => setDbUser(data))
+      .catch(err => console.log('error', err))
+  }, [user?.email])
 
-  const value={
+  const handleReport = product => {
+    const report = {
+      productId: product._id,
+      reporterName: user.displayName,
+      reporterEmail: user.email,
+      image: product.image,
+      productName: product.productName,
+      category: product.category
+    }
+    fetch('http://localhost:5000/reportProduct', {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+        authorization: `Bearer ${localStorage.getItem('cameraCrew-token')}`
+      },
+      body: JSON.stringify(report)
+    }).then(res => res.json()).then(data => {
+      console.log(data);
+      if (data.acknowledged) {
+        Swal.fire(`${product.productName} reported to admin`);
+      }
+      setRefresh(!refresh)
+    })
+  }
+  const value = {
     dbUser,
-    bookings,
-    setBookings
+    handleReport,
+    refresh,
+    setRefresh
   }
   return (
     <GeneralContext.Provider value={value}>

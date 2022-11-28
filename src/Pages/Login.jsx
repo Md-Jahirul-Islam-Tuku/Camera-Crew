@@ -28,15 +28,18 @@ const Login = () => {
         })
         navigate(from, { replace: true });
       })
-      .then(error => {
-        console.error(error)
-        setLoading(false)
-      }).catch(err => {
+      .catch(err => {
         console.log('error',err)
         if (err.message === 'Firebase: Error (auth/user-not-found).') {
           Swal.fire({
             icon: 'error',
             title: 'User Not Found. Create new account.',
+            showConfirmButton: false,
+          })
+        } else if (err.message === 'Firebase: Error (auth/wrong-password).') {
+          Swal.fire({
+            icon: 'error',
+            title: 'Wrong Password',
             showConfirmButton: false,
           })
         }

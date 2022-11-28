@@ -3,22 +3,80 @@ import Swal from 'sweetalert2';
 import { AuthContext } from '../../../Context/AuthProvider';
 import LoadingSpinner from '../../Spinner/LoadingSpinner';
 import { CheckBadgeIcon } from '@heroicons/react/24/solid'
+import { useQuery } from '@tanstack/react-query';
 
 const AllSeller = () => {
   const { loading } = useContext(AuthContext);
-  const [sellers, setSellers] = useState([]);
   const [refresh, setRefresh] = useState(true);
-
   let [changeText, setChangeText] = useState(false);
 
-  useEffect(() => {
-    fetch('http://localhost:5000/users?role=Seller')
-      .then(res => res.json())
-      .then(data => {
-        setSellers(data)
-        setRefresh(!refresh)
-      })
-  }, [refresh])
+  // const [sellers, setSellers] = useState([]);
+  // useEffect(() => {
+  //   fetch('http://localhost:5000/users?role=Seller')
+  //     .then(res => res.json())
+  //     .then(data => {
+  //       setSellers(data)
+  //       setRefresh(!refresh)
+  //     })
+  // }, [refresh])
+
+  const { data: sellers = [], refetch } = useQuery({
+    queryKey: ['sellers'],
+    queryFn: () => fetch('http://localhost:5000/users?role=Seller').then(res => res.json())
+  })
+
+  const handleDelete = seller => {
+    const email = seller.email;
+    const swalWithBootstrapButtons = Swal.mixin({
+      customClass: {
+        confirmButton: 'btn btn-success',
+        cancelButton: 'btn btn-error text-white mr-2'
+      },
+      buttonsStyling: false
+    })
+
+    swalWithBootstrapButtons.fire({
+      title: 'Are you sure?',
+      text: `You won't be able to revert Dr. ${seller?.productName}`,
+      imageUrl: `${seller?.img}`,
+      imageWidth: 350,
+      imageHeight: 350,
+      imageAlt: 'Seller image',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'No, cancel!',
+      reverseButtons: true
+    }).then((result) => {
+      if (result.isConfirmed) {
+        fetch(`http://localhost:5000/seller/${seller?._id}`, {
+          method: 'DELETE',
+          headers: {
+            authorization: `Bearer ${localStorage.getItem('cameraCrew-token')}`
+          },
+          body: JSON.stringify({ email })
+        })
+          .then(res => res.json())
+          .then(data => {
+            if (data?.deletedCount) {
+              swalWithBootstrapButtons.fire(
+                'Deleted!',
+                `${seller?.name} has been deleted.`,
+                'success'
+              )
+            }
+          })
+
+      } else if (
+        result.dismiss === Swal.DismissReason.cancel
+      ) {
+        swalWithBootstrapButtons.fire(
+          'Cancelled',
+          'Your imaginary doctor is safe :)',
+          'error'
+        )
+      }
+    })
+  }
   const handleBadge = seller => {
     const email = seller.email;
     setChangeText(!changeText);
@@ -32,7 +90,6 @@ const AllSeller = () => {
     })
       .then(res => res.json())
       .then(data => {
-        console.log(data);
         if (data.result.modifiedCount && data.value.modifiedCount && changeText) {
           Swal.fire({
             icon: 'success',
@@ -43,6 +100,7 @@ const AllSeller = () => {
             title: `${seller?.name} verified`,
             showConfirmButton: true,
           })
+          refetch()
         }
         else if (data.result.modifiedCount && data.value.modifiedCount && !changeText){
           Swal.fire({
@@ -54,6 +112,7 @@ const AllSeller = () => {
             title: `${seller?.name} unverified`,
             showConfirmButton: true,
           })
+          refetch()
         }
       })
       .catch(err => console.error(err))
@@ -89,7 +148,7 @@ const AllSeller = () => {
                   <td>{seller.name}</td>
                   <td>{seller.email}</td>
                   <td>
-                    {seller.badge ? <button onClick={() => handleBadge(seller)} className='btn btn-xs font-semibold text-white btn-primary'>unverify</button> :
+                    {seller.badge ? <button onClick={() => handleBadge(seller)} className='btn btn-xs font-semibold text-white btn-primary'>Refute</button> :
                       <>
                         <div className='flex items-center'>
                           <button onClick={() => handleBadge(seller)} className='btn btn-xs font-semibold text-white btn-primary'>verify</button>
@@ -97,7 +156,7 @@ const AllSeller = () => {
                         </div>
                       </>}
                   </td>
-                  <td><button className='btn btn-xs font-semibold text-white btn-error'>Delete</button></td>
+                  <td><button onClick={() => handleDelete(seller)} className='btn btn-xs font-semibold text-white btn-error'>Delete</button></td>
                 </tr>
               )
             }
