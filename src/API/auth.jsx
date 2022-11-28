@@ -5,7 +5,7 @@ export const setAuthToken = user => {
     img: user.userImage || user.photoURL,
     role: user.role,
   }
-  fetch(`http://localhost:5000/user/${user?.email}`, {
+  fetch(`https://y-mauve-alpha.vercel.app/user/${user?.email}`, {
     method: 'PUT',
     headers: {
       'content-type': 'application/json',

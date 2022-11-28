@@ -8,7 +8,7 @@ const MyProducts = () => {
   const [products, setProducts] = useState([]);
   const [refresh, setRefresh] = useState(true)
   useEffect(() => {
-    fetch(`http://localhost:5000/products/${user?.email}`)
+    fetch(`https://y-mauve-alpha.vercel.app/products/${user?.email}`)
       .then(res => res.json())
       .then(data => {
         setProducts(data)
@@ -38,7 +38,7 @@ const MyProducts = () => {
       reverseButtons: true
     }).then((result) => {
       if (result.isConfirmed) {
-        fetch(`http://localhost:5000/products/${product?._id}`, {
+        fetch(`https://y-mauve-alpha.vercel.app/products/${product?._id}`, {
           method: 'DELETE',
           headers: {
             authorization: `Bearer ${localStorage.getItem('cameraCrew-token')}`
@@ -67,7 +67,7 @@ const MyProducts = () => {
     })
   }
   const handleAdvertisement = product => {
-    fetch(`http://localhost:5000/products/${product?._id}`, {
+    fetch(`https://y-mauve-alpha.vercel.app/products/${product?._id}`, {
       method: 'PUT',
       headers: {
         authorization: `Bearer ${localStorage.getItem('cameraCrew-token')}`

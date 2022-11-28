@@ -10,13 +10,13 @@ const GeneralProvider = ({ children }) => {
   const [dbUser, setDbUser] = useState({});
   const [refresh, setRefresh] = useState(false);
   useEffect(() => {
-    fetch(`http://localhost:5000/users/${user?.email}`, {
+    fetch(`https://y-mauve-alpha.vercel.app/users/${user?.email}`, {
       method: 'GET',
       headers: {
         authorization: `Bearer ${localStorage.getItem('cameraCrew-token')}`
       }
     })
-      .then(res=>res.json())
+      .then(res => res.json())
       .then(data => setDbUser(data))
       .catch(err => console.log('error', err))
   }, [user?.email])
@@ -30,7 +30,7 @@ const GeneralProvider = ({ children }) => {
       productName: product.productName,
       category: product.category
     }
-    fetch('http://localhost:5000/reportProduct', {
+    fetch('https://y-mauve-alpha.vercel.app/reportProduct', {
       method: 'POST',
       headers: {
         'content-type': 'application/json',

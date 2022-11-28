@@ -9,7 +9,7 @@ import ButtonSpinner from '../../Spinner/buttonSpinner';
 const AddProduct = () => {
   const { user, loading, setLoading } = useContext(AuthContext);
   const { register, formState: { errors }, handleSubmit } = useForm();
-  const {dbUser}= useContext(GeneralContext);
+  const { dbUser } = useContext(GeneralContext);
   const badge = dbUser?.role;
   const navigate = useNavigate();
   const handleAddProduct = data => {
@@ -28,7 +28,7 @@ const AddProduct = () => {
         if (imgData.success) {
           const image = imgData.data.url;
           const product = { ...data, image, badge };
-          fetch('http://localhost:5000/products', {
+          fetch('https://y-mauve-alpha.vercel.app/products', {
             method: 'POST',
             headers: {
               'content-type': 'application/json',

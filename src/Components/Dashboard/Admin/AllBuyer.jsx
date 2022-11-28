@@ -10,21 +10,21 @@ const AllBuyer = () => {
 
   const { data: buyers = [], refetch } = useQuery({
     queryKey: ['buyers'],
-    queryFn: () => fetch('http://localhost:5000/users?role=Buyer').then(res => res.json())
+    queryFn: () => fetch('https://y-mauve-alpha.vercel.app/users?role=Buyer').then(res => res.json())
   })
   const { data: bookings = [], } = useQuery({
     queryKey: ['bookings'],
-    queryFn: () => fetch('http://localhost:5000/booking').then(res => res.json())
+    queryFn: () => fetch('https://y-mauve-alpha.vercel.app/booking').then(res => res.json())
   })
 
   const handleProducts = buyer => {
-    fetch(`http://localhost:5000/value/${buyer?.email}`, {
+    fetch(`https://y-mauve-alpha.vercel.app/value/${buyer?.email}`, {
       method: 'PUT'
     }).then(res => res.json()).then(() => { })
   }
 
   const handleBadge = buyer => {
-    fetch(`http://localhost:5000/seller/${buyer?._id}`, {
+    fetch(`https://y-mauve-alpha.vercel.app/seller/${buyer?._id}`, {
       method: 'PUT',
       headers: {
         authorization: `Bearer ${localStorage.getItem('cameraCrew-token')}`

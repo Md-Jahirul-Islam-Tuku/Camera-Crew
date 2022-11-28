@@ -46,7 +46,7 @@ const router = createBrowserRouter([
       {
         path: 'categoryProducts/:category',
         element: <PrivateRoute><CategoryProducts /></PrivateRoute>,
-        loader: ({params}) => fetch(`http://localhost:5000/categoryProducts/${params?.category}`)
+        loader: ({ params }) => fetch(`https://y-mauve-alpha.vercel.app/categoryProducts/${params?.category}`)
       },
     ]
   },
@@ -81,7 +81,7 @@ const router = createBrowserRouter([
       {
         path: '/dashboard/payment/:id',
         element: <Payment />,
-        loader: ({ params }) => fetch(`http://localhost:5000/dashboard/payment/${params.id}`)
+        loader: ({ params }) => fetch(`https://y-mauve-alpha.vercel.app/dashboard/payment/${params.id}`)
       }
     ]
   }

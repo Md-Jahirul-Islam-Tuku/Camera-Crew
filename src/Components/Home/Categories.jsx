@@ -4,9 +4,9 @@ import CategoryCard from '../Card/CategoryCard';
 const Categories = () => {
   const [categories, setCategories] = useState([]);
   useEffect(() => {
-    fetch('http://localhost:5000/categories')
-    .then(res => res.json())
-    .then(data => setCategories(data))
+    fetch('https://y-mauve-alpha.vercel.app/categories')
+      .then(res => res.json())
+      .then(data => setCategories(data))
   }, [])
   return (
     <div div className='mt-12'>

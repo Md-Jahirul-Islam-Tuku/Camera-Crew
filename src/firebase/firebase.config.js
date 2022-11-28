@@ -1,11 +1,11 @@
 import { initializeApp } from "firebase/app";
 const firebaseConfig = {
-  apiKey: "AIzaSyDxRNW019aLpriylaLHpIwMG1N8VrOlcbY",
-  authDomain: "camera-crew.firebaseapp.com",
-  projectId: "camera-crew",
-  storageBucket: "camera-crew.appspot.com",
-  messagingSenderId: "867704606944",
-  appId: "1:867704606944:web:4705fd258d10194ab7c085"
+  apiKey: process.env.REACT_APP_apiKey,
+  authDomain: process.env.REACT_APP_authDomain,
+  projectId: process.env.REACT_APP_projectId,
+  storageBucket: process.env.REACT_APP_storageBucket,
+  messagingSenderId: process.env.REACT_APP_messagingSenderId,
+  appId: process.env.REACT_APP_appId,
 };
 const app = initializeApp(firebaseConfig);
 

@@ -7,7 +7,7 @@ import LoadingSpinner from '../../Spinner/LoadingSpinner';
 
 const ReportedItems = () => {
   const { user, loading } = useContext(AuthContext);
-  const {refresh, setRefresh} = useContext(GeneralContext);
+  const { refresh, setRefresh } = useContext(GeneralContext);
 
   const [reports, setReports] = useState([])
   const fetchReports = () =>
@@ -38,7 +38,7 @@ const ReportedItems = () => {
       reverseButtons: true
     }).then((result) => {
       if (result.isConfirmed) {
-        fetch(`http://localhost:5000/products/${productId}`, {
+        fetch(`https://y-mauve-alpha.vercel.app/products/${productId}`, {
           method: 'DELETE',
           headers: {
             authorization: `Bearer ${localStorage.getItem('cameraCrew-token')}`

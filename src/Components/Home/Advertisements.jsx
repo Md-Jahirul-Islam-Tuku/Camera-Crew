@@ -26,7 +26,7 @@ const Advertisements = () => {
 
   const { data: featuredProducts = [], refetch } = useQuery({
     queryKey: ['featuredProducts'],
-    queryFn: () => fetch('http://localhost:5000/advertisementProducts').then(res => res.json())
+    queryFn: () => fetch('https://y-mauve-alpha.vercel.app/advertisementProducts').then(res => res.json())
   })
   return (
     <div className={`bg-primary my-10 py-10 ${featuredProducts.length === 0 && 'hidden'}`}>

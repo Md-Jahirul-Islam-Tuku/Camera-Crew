@@ -7,7 +7,7 @@ import { GeneralContext } from '../../Context/GeneralProvider';
 const BookingModal = ({ product, setItem, refetch }) => {
   const { _id, productName, resalePrice, image } = product;
   const { user } = useContext(AuthContext);
-  const {refresh, setRefresh}=useContext(GeneralContext);
+  const { refresh, setRefresh } = useContext(GeneralContext);
   const handleBooking = e => {
     e.preventDefault();
     const form = e.target;
@@ -26,7 +26,7 @@ const BookingModal = ({ product, setItem, refetch }) => {
       phone,
       location
     }
-    fetch('http://localhost:5000/booking', {
+    fetch('https://y-mauve-alpha.vercel.app/booking', {
       method: 'POST',
       headers: {
         'content-type': 'application/json',

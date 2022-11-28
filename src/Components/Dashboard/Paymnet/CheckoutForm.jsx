@@ -13,7 +13,7 @@ const CheckoutForm = ({ data }) => {
   const stripe = useStripe();
   const elements = useElements();
   useEffect(() => {
-    fetch("http://localhost:5000/create-payment-intent", {
+    fetch("https://y-mauve-alpha.vercel.app/create-payment-intent", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -72,7 +72,7 @@ const CheckoutForm = ({ data }) => {
         email: userEmail,
         bookingId: _id
       }
-      fetch('http://localhost:5000/payments', {
+      fetch('https://y-mauve-alpha.vercel.app/payments', {
         method: 'POST',
         headers: {
           'content-type': 'application/json',
@@ -108,12 +108,12 @@ const CheckoutForm = ({ data }) => {
       <button className='btn btn-primary btn-sm mt-3' type="submit"
         disabled={!stripe
           //  || !clientSecret
-          }
+        }
       >
         {
           // processing ?
           //   <div className="w-6 h-6 border-4 border-dashed rounded-full animate-spin border-white"></div> :
-            'Pay'
+          'Pay'
         }
       </button>
       <p className='mt-2 text-error'>{cardError}</p>

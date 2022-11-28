@@ -1,6 +1,6 @@
 export const getBookings = async () => {
   const response = await fetch(
-    'http://localhost:5000/booking',
+    'https://y-mauve-alpha.vercel.app/booking',
     {
       method: 'GET',
       headers: {

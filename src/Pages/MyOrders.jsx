@@ -10,7 +10,7 @@ const MyOrders = () => {
  const { refresh, setRefresh } = useContext(GeneralContext);
  const [orders, setOrders] = useState([])
  useEffect(() => {
-  fetch(`http://localhost:5000/myOrders/${user?.email}`,
+  fetch(`https://y-mauve-alpha.vercel.app/myOrders/${user?.email}`,
    {
     method: 'GET',
     headers: {
@@ -46,7 +46,7 @@ const MyOrders = () => {
    reverseButtons: true
   }).then((result) => {
    if (result.isConfirmed) {
-    fetch(`http://localhost:5000/bookings/${product?._id}`, {
+    fetch(`https://y-mauve-alpha.vercel.app/bookings/${product?._id}`, {
      method: 'DELETE',
      headers: {
       authorization: `Bearer ${localStorage.getItem('cameraCrew-token')}`
@@ -76,7 +76,7 @@ const MyOrders = () => {
   })
  }
  const handleAdvertisement = product => {
-  fetch(`http://localhost:5000/products/${product?._id}`, {
+  fetch(`https://y-mauve-alpha.vercel.app/products/${product?._id}`, {
    method: 'PUT',
    headers: {
     authorization: `Bearer ${localStorage.getItem('cameraCrew-token')}`
@@ -133,11 +133,11 @@ const MyOrders = () => {
         <td>{product.location}</td>
         <td>
          {
-          product.price && !product.paid && 
+          product.price && !product.paid &&
           <Link to={`/dashboard/payment/${product._id}`}><button className='btn btn-xs btn-accent text-white hover:text-success'>Payment</button></Link>
          }
          {
-          product.price && product.paid && 
+          product.price && product.paid &&
           <p className='text-secondary text-xl hidden'>PAID</p>
          }
         </td>

@@ -12,7 +12,7 @@ const AllSeller = () => {
 
   // const [sellers, setSellers] = useState([]);
   // useEffect(() => {
-  //   fetch('http://localhost:5000/users?role=Seller')
+  //   fetch('https://y-mauve-alpha.vercel.app/users?role=Seller')
   //     .then(res => res.json())
   //     .then(data => {
   //       setSellers(data)
@@ -22,7 +22,7 @@ const AllSeller = () => {
 
   const { data: sellers = [], refetch } = useQuery({
     queryKey: ['sellers'],
-    queryFn: () => fetch('http://localhost:5000/users?role=Seller').then(res => res.json())
+    queryFn: () => fetch('https://y-mauve-alpha.vercel.app/users?role=Seller').then(res => res.json())
   })
 
   const handleDelete = seller => {
@@ -48,7 +48,7 @@ const AllSeller = () => {
       reverseButtons: true
     }).then((result) => {
       if (result.isConfirmed) {
-        fetch(`http://localhost:5000/seller/${seller?._id}`, {
+        fetch(`https://y-mauve-alpha.vercel.app/seller/${seller?._id}`, {
           method: 'DELETE',
           headers: {
             authorization: `Bearer ${localStorage.getItem('cameraCrew-token')}`
@@ -80,7 +80,7 @@ const AllSeller = () => {
   const handleBadge = seller => {
     const email = seller.email;
     setChangeText(!changeText);
-    fetch(`http://localhost:5000/seller/${seller?._id}`, {
+    fetch(`https://y-mauve-alpha.vercel.app/seller/${seller?._id}`, {
       method: 'PUT',
       headers: {
         'content-type': 'application/json',
@@ -102,7 +102,7 @@ const AllSeller = () => {
           })
           refetch()
         }
-        else if (data.result.modifiedCount && data.value.modifiedCount && !changeText){
+        else if (data.result.modifiedCount && data.value.modifiedCount && !changeText) {
           Swal.fire({
             icon: 'error',
             imageUrl: `${seller?.img}`,
