@@ -19,6 +19,7 @@ const BookingModal = ({ product, setItem, refetch }) => {
     const booking = {
       productName,
       productId: _id,
+      image,
       price: resalePrice,
       userName: name,
       userEmail: email,

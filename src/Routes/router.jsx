@@ -2,6 +2,7 @@ import { createBrowserRouter } from "react-router-dom";
 import AllBuyer from "../Components/Dashboard/Admin/AllBuyer";
 import AllSeller from "../Components/Dashboard/Admin/AllSeller";
 import ReportedItems from "../Components/Dashboard/Admin/ReportedItems";
+import Payment from "../Components/Dashboard/Paymnet/Payment";
 import AddProduct from "../Components/Dashboard/Seller/AddProduct";
 import MyBuyers from "../Components/Dashboard/Seller/MyBuyers";
 import MyProducts from "../Components/Dashboard/Seller/MyProducts";
@@ -77,6 +78,11 @@ const router = createBrowserRouter([
         path: '/dashboard/reportedItems',
         element: <ReportedItems />
       },
+      {
+        path: '/dashboard/payment/:id',
+        element: <Payment />,
+        loader: ({ params }) => fetch(`http://localhost:5000/dashboard/payment/${params.id}`)
+      }
     ]
   }
 ])
